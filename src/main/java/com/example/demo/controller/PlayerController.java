@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api")
@@ -30,11 +32,17 @@ public class PlayerController {
 
    @GetMapping
     public Flux<Player> getFilteredPlayers() {
+       playerService.getRankingPlayer();
         return playerService.getFilterPlayer()
                 .buffer(100)
                 .flatMap(juga ->Flux.fromStream(juga.parallelStream()));
 
     }
 
+
+    @GetMapping("/listas")
+    public Flux<List<Player>> getListasRankingPlayers() {
+       return playerService.getRankingPlayer();
+    }
 
 }

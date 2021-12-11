@@ -5,9 +5,10 @@ import com.example.demo.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import static java.util.stream.Collectors.groupingBy;
+import java.util.Collections;
+import java.util.List;
+
 
 
 @Service
@@ -20,8 +21,7 @@ public class PlayerService {
     private Flux<Player> getAll() {
         return playerRepository.findAll()
                 .buffer(100)
-                .flatMap(players -> Flux.fromStream(players.parallelStream()))
-                .switchIfEmpty(Mono.error(new RuntimeException("Objeto vacio")));
+                .flatMap(players -> Flux.fromStream(players.parallelStream()));
 
     }
 
@@ -35,8 +35,7 @@ public class PlayerService {
                     } catch (Exception e) {
                         return false;
                     }
-                })
-                .switchIfEmpty(Mono.error(new RuntimeException("Objeto vacio Find all")));
+                });
     }
 
     private Flux<Player> clubEspecifico() {
@@ -50,7 +49,9 @@ public class PlayerService {
                         return false;
                     }
                 })
-                .switchIfEmpty(Mono.error(new RuntimeException("Objeto vacio Filtro 1")));
+                .onErrorContinue((e, i) ->
+                    System.out.println("error por filtro 1 "+i)
+                );
     }
 
 
@@ -59,29 +60,28 @@ public class PlayerService {
                 .buffer(100)
                 .flatMap(juga -> Flux.fromStream(juga.parallelStream()))
 
-                .switchIfEmpty(Mono.error(new RuntimeException("Objeto vacio Filtro 2")));
+                .onErrorContinue((e, i) ->
+                    System.out.println("error filtrandoListas "+i));
     }
 
 
-    public Flux<Player> getRankingPlayer() {
-        var result = getAll()
+    public Flux<List<Player>> getRankingPlayer() {
+
+        return getAll()
                 .buffer(100)
                 .flatMap(juga -> Flux.fromStream(juga.parallelStream()))
                 .distinct()
                 .groupBy(Player::getNational)
-                .flatMap(grupo -> {
-                    grupo
-                            .flatMap(p -> {
-                                return Flux.just(p);
-                            })
-                            ;
+                .flatMap(Flux::collectList)
+                .map(lista -> {
+                    Collections.sort(lista);
+                    return lista;
+                })
+                .onErrorContinue((e, i) ->
+                    System.out.println("error filtrandoListas "+i));
 
-                });
 
-        //.collect(groupingBy(Player::getNational))
-        //.flatMap(nacionalList -> Mono.just(nacionalList));
 
-        return null;
     }
 
 
