@@ -13,3 +13,8 @@ Leer las pruebas unitarias.
 - Hacer un proceso de migración en donde tomemos los datos del archivo y lo llevemos a una base datos (MangoDB)
 - Trabajo directamente los desde una base de datos reactiva y objserva la rendimiento
 - Prueba de concurencia con JMeter, donde vamos a colocar 100 hilos de ejeucución para observar los comportamientos de cada servicio
+
+
+# Notas
+
+En la base de datos de mongo, importe el archivo data2.cvs, de la carpeta de src/test/resourses
