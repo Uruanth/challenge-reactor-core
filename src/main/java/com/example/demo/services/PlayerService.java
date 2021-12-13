@@ -5,6 +5,7 @@ import com.example.demo.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,17 +22,18 @@ public class PlayerService {
     private Flux<Player> getAll() {
         return playerRepository.findAll()
                 .buffer(100)
-                .flatMap(players -> Flux.fromStream(players.parallelStream()));
-
+                .flatMap(players -> Flux.fromStream(players.parallelStream()))
+                ;
     }
 
     private Flux<Player> mayores34() {
-        return getAll()
+
+         return getAll()
                 .buffer(100)
                 .flatMap(juga -> Flux.fromStream(juga.parallelStream()))
                 .filter(jugador -> {
                     try {
-                        return jugador.getAge() > 34;
+                        return jugador.getAge() > 24;
                     } catch (Exception e) {
                         return false;
                     }
@@ -84,5 +86,11 @@ public class PlayerService {
 
     }
 
+
+
+    public Mono<Player> prueba(){
+        return playerRepository.findByCode("158023");
+
+    }
 
 }

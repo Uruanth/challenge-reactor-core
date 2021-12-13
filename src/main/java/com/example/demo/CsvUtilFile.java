@@ -19,7 +19,8 @@ public class CsvUtilFile {
         try (CSVReader reader = new CSVReader(new FileReader(uri.getFile()))) {
             List<String[]> registers = reader.readAll();
             registers.forEach(strings -> list.add(new Player(
-                    Integer.parseInt(strings[0].trim()),
+                    //Integer.parseInt(strings[0].trim()),
+                    strings[0].trim(),
                     strings[1],
                     Integer.parseInt(Optional.of(strings[2].trim()).filter(h -> !h.isBlank()).orElse("0")),
                     strings[3],

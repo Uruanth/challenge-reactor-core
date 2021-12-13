@@ -9,7 +9,8 @@ public class Player implements Comparable<Player>{
 
     @Id
     public String id;
-    private int codePlayer;
+
+    private String code;
     public String name;
     public int age;
     public String icon;
@@ -22,9 +23,9 @@ public class Player implements Comparable<Player>{
 
     }
 
-    public Player(int codePlayer, String name, int age, String icon, String national, int winners, int games, String club) {
+    public Player(String code, String name, int age, String icon, String national, int winners, int games, String club) {
 
-        this.codePlayer = codePlayer;
+        this.code = code;
         this.name = name;
         this.age = age;
         this.icon = icon;
@@ -38,7 +39,7 @@ public class Player implements Comparable<Player>{
     public String toString() {
         return "Player{" +
                 "id='" + id + '\'' +
-                ", codePlayer=" + codePlayer +
+                ", codePlayer=" + code +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", icon='" + icon + '\'' +
@@ -49,16 +50,21 @@ public class Player implements Comparable<Player>{
                 '}';
     }
 
+
+    public String getId() {
+        return id;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
 
-    public int getCodePlayer() {
-        return codePlayer;
+    public String getCode() {
+        return code;
     }
 
-    public void setCodePlayer(int codePlayer) {
-        this.codePlayer = codePlayer;
+    public void setCode(String code) {
+        this.code = code;
     }
 
 

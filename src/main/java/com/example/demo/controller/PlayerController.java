@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -43,6 +44,16 @@ public class PlayerController {
     @GetMapping("/listas")
     public Flux<List<Player>> getListasRankingPlayers() {
        return playerService.getRankingPlayer();
+    }
+
+
+    @GetMapping("/prueba")
+    public Mono<Player> prueba() {
+        System.out.println("asdad\n");
+        playerService.prueba().subscribe(System.out::println);
+        //System.out.println("asdad edad\n");
+       // playerRepository.findByAge(34).subscribe(System.out::println);;
+       return Mono.just(new Player());
     }
 
 }
